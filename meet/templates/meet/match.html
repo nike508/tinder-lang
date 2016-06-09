@@ -1,0 +1,22 @@
+{% include 'meet/banner.html' %}
+
+<h1>{{title}}</h1>
+
+<h2>Messages</h2>
+<h3>Add Message</h3>
+<form action="{% url 'meet:new_comment' match.id %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="comment">
+    <input type="submit" value="Send">
+</form>
+
+{% if match.comments %}
+    <ul>
+    {% for comment in match.comments.all %}
+        <div>By: {{comment.author}}&nbspAt: {{comment.date}}</div>
+        <li>{{ comment.text }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No comments yet.</p>
+{% endif %}

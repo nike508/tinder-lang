@@ -1,0 +1,14 @@
+<h1>LangLust</h1>
+<p>Want to chat with people in a certain language? Whether you're single and tryna fuck,
+    want to practice a language using real conversation, or both, come inside me.</p>
+
+<a href="{% url 'meet:create_user' %}"><h2>New Users Sign Up Here</h2></a>
+<br/>
+<h2>Existing Users Login</h2>
+<form action="{% url 'meet:login' %}" method="post">
+    {% csrf_token %}
+    Username: <input type="text" name="username">
+    <br/>
+    Password: <input type="text" name="password">
+    <input type="submit" value="Login">
+</form>

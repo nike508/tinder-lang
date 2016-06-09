@@ -1,0 +1,19 @@
+{% include 'meet/banner.html' %}
+{% if matches %}
+    <h1>Existing Matches</h1>
+    <ul>
+    {% for match in matches %}
+        <li><a href="{% url 'meet:match_detail' match.id %}">{{ match.friend_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no matches yet. Find a user to match with!</p>
+{% endif %}
+
+<h1>Users List</h1>
+<ul>
+    {% for user in users %}
+    <li><a href="{% url 'meet:user_detail' user.id %}">{{user.name}}</a></li>
+    {% endfor %}
+</ul>
+

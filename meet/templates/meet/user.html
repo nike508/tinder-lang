@@ -1,0 +1,20 @@
+{% include 'meet/banner.html' %}
+<h1>{{ user.name }}</h1>
+
+<h2>info</h2>
+<ul>
+    <li>username: {{user.username}}</li>
+    <li>Date of Birth: {{user.dob}}</li>
+    <li>Gender: {{user.gender}}</li>
+    <li>City: {{user.city}}</li>
+    <li>Country: {{user.country}}</li>
+    <li>Language: {{user.language}}</li>
+    <li>Member since: {{user.join_date}}</li>
+    <li>Rep: {{user.stars}}<a style="margin-left:10" href="{% url 'meet:upvote_user' user.id %}">Upvote</a></li>
+</ul>
+</br>
+{% if match_id %}
+<a href="{% url 'meet:match_detail' match_id %}">Go To Match</a>
+{% else %}
+<a href="{% url 'meet:match' user.id %}">New Match</a>
+{% endif %}

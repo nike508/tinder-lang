@@ -1,0 +1,10 @@
+{{ group }}
+{% if group.users %}
+    <ul>
+    {% for user in group.users.all %}
+        <li><a href="{% url 'meet:user_detail' user.id %}">{{ user.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No users in group.</p>
+{% endif %}
