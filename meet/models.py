@@ -31,6 +31,11 @@ class Match(models.Model):
     date = models.DateTimeField('match timestamp')
 
 
+class Unmatch(models.Model):
+    users = models.ManyToManyField(Profile, related_name='unmatches')
+    date = models.DateTimeField('unmatch timestamp')
+
+
 class Comment(models.Model):
     match = models.ForeignKey(Match, related_name='comments')
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)

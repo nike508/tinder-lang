@@ -1,11 +1,10 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from models import Group, Profile, Match, Comment
+from models import Group, Profile, Match, Comment, Unmatch
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login, logout
-from datetime import date
 
 
 def index(request):
@@ -13,7 +12,6 @@ def index(request):
         return HttpResponseRedirect('logout/')
 
     matches = Match.objects.filter(users=request.user.id)
-    print(dir(request.user))
     for match in matches:
         for user in match.users.all():
             if user.id != request.user.id:
@@ -110,6 +108,16 @@ def match(request, user_id):
     match.save()
 
     return HttpResponseRedirect(reverse('meet:match_detail', args=(match.id,)))
+
+
+def unmatch(request, user_id):
+    user = get_object_or_404(Profile, pk=user_id)
+    match = Unmatch(date=timezone.now())
+    match.save()
+    match.users.add(user, request.user)
+    match.save()
+
+    return HttpResponseRedirect(reverse('meet:index'))
 
 
 @csrf_protect

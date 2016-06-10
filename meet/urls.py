@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^groups/(?P<group_id>[0-9]+)/$', views.group_detail, name='group_detail'),
     url(r'^matches/(?P<match_id>[0-9]+)/?', views.match_detail, name='match_detail'),
     url(r'^users/(?P<user_id>[0-9]+)/match/?', views.match, name='match'),
+    url(r'^users/(?P<user_id>[0-9]+)/unmatch/?', views.unmatch, name='unmatch'),
     url(r'^new_comment/(?P<match_id>[0-9]+)$', views.new_comment, name='new_comment'),
 ]
