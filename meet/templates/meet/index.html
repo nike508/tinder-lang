@@ -13,16 +13,16 @@
 <h1>Users List</h1>
 <ul>
     {% for user in users %}
-    <li><a href="{% url 'meet:user_detail' user.id %}">{{user.name}}</a></li>
-    {% endfor %}
-</ul>
-<p>
+    <p>
+        {{user.name}}
 <img src="https://jayveeaitch.files.wordpress.com/2011/09/vlcsnap-12524669.png">
 </p>
-<link
+<link>
 <div id="MatchChoice">
 <p id="Match_Left">
-<button style="float:left" type="button" onclick="{% url 'meet:match' user.id %}">Fuck Yes</button>
-<button style="float:center-right" type="button" onclick="{% url 'meet:unmatch' user.id %}">Hell No</button>
+<button style="float:left" type="button"><a href="{% url 'meet:match' user.id %}">Fuck Yes</a></button>
+<button style="float:center-right" type="button"><a href="{% url 'meet:unmatch' user.id %}">Hell No</a></button>
 </p>
 </div>
+    {% endfor %}
+</ul>
