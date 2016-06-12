@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from models import Group, Profile, Match, Comment, Unmatch
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login, logout
@@ -25,9 +26,16 @@ def index(request):
     return render(request, 'meet/index.html', context)
 
 
+def handle_uploaded_file(f):
+    with open(settings.MEDIA_ROOT+f.name, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
 @csrf_protect
 def edit_profile(request):
     if request.POST:  # update existing profile
+        handle_uploaded_file(request.FILES['photo'])
+        request.user.photo = request.FILES['photo']
         request.user.name = request.POST['name']
         request.user.gender = request.POST['gender']
         request.user.city = request.POST['city']
@@ -36,8 +44,7 @@ def edit_profile(request):
         request.user.save()
         return HttpResponseRedirect(reverse('meet:edit_profile'))
     else:
-        context = dict((key, str(getattr(request.user, key))) for key in ['name', 'gender', 'city', 'country', 'language'])
-        print(context)
+        context = dict((key, str(getattr(request.user, key))) for key in ['photo', 'name', 'gender', 'city', 'country', 'language'])
         return render(request, 'meet/profile.html', context)
 
 

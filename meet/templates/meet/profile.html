@@ -2,7 +2,11 @@
 <h1>Edit Profile</h1>
 
 <h2>info</h2>
-<form action="{% url 'meet:edit_profile' %}" method="post">{% csrf_token %}
+<form action="{% url 'meet:edit_profile' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <img height="200" width="200" src="{{ MEDIA_URL }}{{ photo }}"/>
+    <br/>
+    Photo: <input type="file" name="photo" accept="image/*">
+    <br/>
     Name: <input type="text" name="name" value="{{name}}">
     <br/>
     City: <input type="text" name="city", value="{{city}}">

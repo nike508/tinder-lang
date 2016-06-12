@@ -14,6 +14,7 @@ class Group(models.Model):
 
 class Profile(AbstractUser):
     REQUIRED_FIELDS = ['email']
+    photo = models.ImageField(null=True)
     dob = models.DateField('Date of Birth', null=True)
     name = models.CharField(max_length=40, null=True)
     gender = models.CharField(max_length=1, null=True)
