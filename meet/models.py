@@ -20,11 +20,26 @@ class Profile(AbstractUser):
     gender = models.CharField(max_length=1, null=True)
     city = models.CharField(max_length=20, null=True)
     country = models.CharField(max_length=15, null=True)
-    language = models.CharField(max_length=15, null=True)
     stars = models.IntegerField(default=0, null=True)
 
     def __str__(self):
         return self.name
+
+
+class Language(models.Model):
+    name = models.CharField(max_length=20, null=False)
+
+    def __str__(self):
+        return self.name
+
+
+class UserLanguage(models.Model):
+    language = models.ForeignKey(Language, related_name='user_languages')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='languages')
+    proficiency = models.IntegerField(null=False)
+
+    def __str__(self):
+        return self.language.name
 
 
 class Match(models.Model):

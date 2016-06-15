@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from models import Group, Profile, Match, Comment, Unmatch
+from models import Group, Profile, Match, Comment, Unmatch, Language, UserLanguage
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils import timezone
@@ -34,17 +34,25 @@ def handle_uploaded_file(f):
 @csrf_protect
 def edit_profile(request):
     if request.POST:  # update existing profile
-        handle_uploaded_file(request.FILES['photo'])
-        request.user.photo = request.FILES['photo']
+        if 'photo' in request.FILES:
+            handle_uploaded_file(request.FILES['photo'])
+            request.user.photo = request.FILES['photo']
         request.user.name = request.POST['name']
         request.user.gender = request.POST['gender']
         request.user.city = request.POST['city']
         request.user.country = request.POST['country']
-        request.user.language = request.POST['language']
         request.user.save()
+        lang = Language.objects.get(id=request.POST['language'])
+        if not UserLanguage.objects.filter(language=lang).filter(user=request.user):
+            ulang = UserLanguage(language=lang, user=request.user, proficiency=5)
+            ulang.save()
+
         return HttpResponseRedirect(reverse('meet:edit_profile'))
     else:
-        context = dict((key, str(getattr(request.user, key))) for key in ['photo', 'name', 'gender', 'city', 'country', 'language'])
+        context = dict((key, str(getattr(request.user, key))) for key in ['photo', 'name', 'gender', 'city', 'country'])
+        context['user_languages'] = request.user.languages.all()
+        langs = Language.objects.exclude(user_languages__in=context['user_languages'])
+        context['languages'] = langs
         return render(request, 'meet/profile.html', context)
 
 
@@ -134,3 +142,7 @@ def new_comment(request, match_id):
     comment.save()
     return HttpResponseRedirect(reverse('meet:match_detail', args=(match.id,)))
 
+
+def delete_userlang(request, lang_id):
+    UserLanguage.objects.get(id=lang_id).delete()
+    return HttpResponseRedirect(reverse('meet:edit_profile'))

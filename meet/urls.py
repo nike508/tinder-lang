@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^users/(?P<user_id>[0-9]+)/match/?', views.match, name='match'),
     url(r'^users/(?P<user_id>[0-9]+)/unmatch/?', views.unmatch, name='unmatch'),
     url(r'^new_comment/(?P<match_id>[0-9]+)$', views.new_comment, name='new_comment'),
+    url(r'^rm_userlang/(?P<lang_id>[0-9]+)$', views.delete_userlang, name='rm_userlang'),
 ]

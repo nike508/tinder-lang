@@ -13,9 +13,16 @@
     <br/>
     Country: <input type="text" name="country" value="{{country}}">
     <br/>
-    Language: <select name="language">
-        <option value="English">English</option>
+    Languages: <select name="language">
+        {% for language in languages %}
+        <option value="{{language.id}}">{{language.name}}</option>
+        {% endfor %}
     </select>
+    <ul>
+        {% for language in user_languages %}
+        <li>{{language.language.name}}&nbsp <a href="{% url 'meet:rm_userlang' language.id %}">Remove</a></li>
+        {% endfor %}
+    </ul>
     Gender: <select name="gender">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
